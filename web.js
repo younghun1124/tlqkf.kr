@@ -4,8 +4,8 @@ app.use(express.urlencoded({ extended: true }));
 app.set("views", __dirname + "/views");
 require("dotenv").config();
 
-const API_KEY = process.env.API_KEY;
-const PORT = process.env.PORT;
+const API_KEY = "RGAPI-7d6f4ef7-d271-4e77-ade7-a4642cf53c27"; //process.env.API_KEY;
+const PORT = 8001; //process.env.PORT;
 var RiotRequest = require("riot-lol-api");
 var riotRequest = new RiotRequest(API_KEY);
 
