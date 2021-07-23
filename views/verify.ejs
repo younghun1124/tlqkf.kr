@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tlqkf</title>
+  </head>
+  <body>
+    ID: <%=summonerData.id%><br>
+    accountID: <%=summonerData.accountId%><br>
+    puuid: <%=summonerData.puuid%><br>
+    name: <%=summonerData.name%><br>
+    profileIconID: <%=summonerData.profileIconId%><br>
+    revisionDate: <%=summonerData.revisionDate%><br>
+    summonerLevel: <%=summonerData.summonerLevel%><br>
+    현재 아이콘
+    <img src="http://ddragon.leagueoflegends.com/cdn/11.15.1/img/profileicon/<%=summonerData.profileIconId%>.png" alt="">
+    <br>
+    소환사 아이콘을 이걸로 바꾼 뒤 "확인" 버튼을 눌러주세요
+    <img src="http://ddragon.leagueoflegends.com/cdn/11.15.1/img/profileicon/<%=randIconId%>.png" alt="">
+    <form action="/verify" method="get">
+       <button type="submit">확인</button>
+    </form>
+   
+</html>
