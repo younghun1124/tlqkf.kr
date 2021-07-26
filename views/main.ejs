@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%-include('head.html')%>
+  <body>
+    <input type="text" id="input" name="summonerName" />
+    <button onclick="search();">검색</button>
+    <script>
+      const input = document.getElementById("input");
+      function search() {
+        console.log(input.value);
+        window.location.href = `/summoner/${input.value}`;
+      }
+    </script>
+  </body>
+</html>
