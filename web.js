@@ -5,87 +5,39 @@ app.set("views", __dirname + "/views");
 app.use("/js", express.static(__dirname + "/js"));
 app.use("/img", express.static(__dirname + "/img"));
 app.use("/public", express.static(__dirname + "/public"));
-require("dotenv").config();
+const { verifyToken } = require("./routes/middleware");
 
-const API_KEY = "RGAPI-5d59cc12-3aa5-4111-97af-cca8922914f5"; //process.env.API_KEY;
+JWT_SECRET = "SASDjha89dy21HJGa1";
+const API_KEY = "RGAPI-ee2c50bb-a3fd-46a5-9358-0edd04cfc530"; //process.env.API_KEY;
 const PORT = 8001; //process.env.PORT;
+
 var RiotRequest = require("riot-lol-api");
 var riotRequest = new RiotRequest(API_KEY);
 
-//passport
-// const passport = require('passport');
-// const LocalStrategy = require('passport-local').Strategy;
-// const Users = require('./user');
+const MongoClient = require("mongodb").MongoClient;
 
-// module.exports = () => {
-//   passport.serializeUser((user, done) => { // Strategy 성공 시 호출됨
-//     done(null, user); // 여기의 user가 deserializeUser의 첫 번째 매개변수로 이동
-//   });
-
-//   passport.deserializeUser((user, done) => { // 매개변수 user는 serializeUser의 done의 인자 user를 받은 것
-//     done(null, user); // 여기의 user가 req.user가 됨
-//   });
-
-//   passport.use(
-//     new LocalStrategy(
-//       {
-//         usernameField: "id",
-//         passwordField: "pw",
-//         session: true,
-//         passReqToCallback: true,
-//       },
-//       function (req, 입력한아이디, 입력한비번, done) {
-//         //req에 있는 값
-// console.log(req)
-
-//         //console.log(입력한아이디, 입력한비번);
-//         db.collection("login").findOne(
-//           { id: 입력한아이디 },
-//           function (에러, 결과) {
-//             if (에러) return done(에러);
-
-//             if (!결과)
-//               return done(null, false, { message: "존재하지않는 아이디요" });
-//             if (입력한비번 == req.body.randIconId) {
-//               return done(null, 결과);
-//             } else {
-//               return done(null, false, { message: "비번틀렸어요" });
-//             }
-//           }
-//         );
-//       }
-//     )
-//   );
-
-app.listen(PORT, function () {
-  console.log(`listening on port ${PORT}`);
-});
-
+MongoClient.connect(
+  "mongodb+srv://FilmmiTLQKF:HJzvb5Db7YIKBE6X@tlqkf.cm4ec.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+  { useUnifiedTopology: true },
+  function (에러, client) {
+    if (에러) {
+      return console.log(에러);
+    }
+    db = client.db("TLQKF");
+    app.listen(PORT, function () {
+      console.log(`listening on port ${PORT}`);
+    });
+  }
+);
 app.get("/", function (req, res) {
-  res.render("main.ejs");
+  // res.render("main.ejs");
+  res.sendFile(__dirname + "/views/index.html");
 });
 
 app.get("/summoner/:summonerName", function (req, res) {
-  res.render("summoner.ejs");
+  // res.render("summoner.ejs");
+  res.sendFile(__dirname + "/views/search.html");
 });
-// app.get("/summoner/:summonerName", function (req, res) {
-//   makeNameURI(req, function (uri) {
-//     riotRequest.request("kr", "summoner", uri, function (err, summonerData) {
-//       console.log(summonerData);
-//       riotRequest.request(
-//         "asia",
-//         "match",
-//         `/lol/match/v5/matches/by-puuid/${summonerData.puuid}/ids?count=3`,
-//         (err, matchData) => {
-//           console.log(matchData);
-//           res.render("summoner.ejs", {
-//             summonerData: summonerData,
-//           });
-//         }
-//       );
-//     });
-//   });
-// });
 
 app.get("/summonerData", (req, res) => {
   riotRequest.request(
@@ -110,22 +62,101 @@ app.get("/matchId", (req, res) => {
 });
 
 app.get("/matchInfo", (req, res) => {
-  console.log(req.query);
   riotRequest.request(
     "asia",
     "match",
     `/lol/match/v5/matches/${req.query.matchId}`,
     function (err, matchInfo) {
-      console.log(matchInfo);
       res.send(matchInfo);
     }
   );
 });
+app.post("/auth", (req, res) => {
+  riotRequest.request(
+    "kr",
+    "summoner",
+    `/lol/summoner/v4/summoners/by-name/${req.body.summonerName}`,
+    function (err, summonerData) {
+      makeRandIcon(summonerData, (randIconId) => {
+        db.collection("authKey").insertOne(
+          {
+            summonerName: decodeURI(summonerData.name),
+            key: randIconId,
+            time: getCurrentDate(),
+          },
+          (err, result) => {
+            if (err) {
+            } else {
+              res.send({ randIconId: randIconId, summonerData: summonerData });
+            }
+          }
+        );
+      });
+    }
+  );
+});
 
-function makeRandIcon(data, callback) {
+app.get("/auth/:authName", (req, res) => {
+  res.sendFile(__dirname + "/views/auth.html");
+});
+
+app.post("/auth/verify", (req, res) => {
+  console.log(req.body.summonerName);
+  riotRequest.request(
+    "kr",
+    "summoner",
+    `/lol/summoner/v4/summoners/by-name/${req.body.summonerName}`,
+    function (err, summonerData) {
+      console.log(summonerData.name);
+      db.collection("authKey").findOne(
+        { summonerName: summonerData.name },
+        function (err, result) {
+          console.log(result);
+          console.log(summonerData.profileIconId);
+          if (result.key === summonerData.profileIconId) {
+            const token = jwt.sign(
+              {
+                puuid: summonerData.puuid,
+                summonerName: summonerData.summonerName,
+              },
+              JWT_SECRET,
+              {
+                expiresIn: "30h", // 1분
+                issuer: "TLQKF.KR",
+              }
+            );
+
+            res.cookie("summonerName", token);
+            res.send("ok");
+          } else {
+            res.send("Icon not correct");
+          }
+        }
+      );
+    }
+  );
+});
+
+function getCurrentDate() {
+  var date = new Date();
+  var year = date.getFullYear();
+  var month = date.getMonth();
+  var today = date.getDate();
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var seconds = date.getSeconds();
+  var milliseconds = date.getMilliseconds();
+  return new Date(
+    Date.UTC(year, month, today, hours, minutes, seconds, milliseconds)
+  );
+}
+
+function makeRandIcon(summonerData, callback) {
   randIconId = Math.floor(Math.random() * 29);
-  if (randIconId === data.body.profileIconID) {
-    makeRandIcon(data);
+  console.log(randIconId);
+  console.log(summonerData.profileIconId);
+  if (randIconId === summonerData.profileIconId) {
+    makeRandIcon(summonerData);
   } else {
     callback(randIconId);
   }

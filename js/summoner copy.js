@@ -1,12 +1,13 @@
 var pathName = window.location.pathname.split("/");
 let summonerInfo;
 const summonerName = document.getElementById("summonerName");
-const icon = document.getElementById("profileIcon");
-const gameList = document.querySelector(".GameList");
+const icon = document.getElementById("icon");
+const matchList = document.getElementById("matchList");
 
 let startNum = 0;
 const countNum = 3;
 getSummonerData();
+
 function getSummonerData() {
   $.ajax({
     type: "GET",
@@ -29,7 +30,7 @@ function getSummonerData() {
       summonerInfo = summonerData;
 
       icon.src = `http://ddragon.leagueoflegends.com/cdn/11.15.1/img/profileicon/${summonerData.profileIconId}.png`;
-      summonerName.innerText = summonerData.name;
+      summonerName.append(summonerData.name);
       getMatchId(summonerData.puuid);
       console.log("요청 성공시 호출");
     })
@@ -81,20 +82,19 @@ function getMatchInfo(matchId) {
 
 function useMatchInfo(matchInfo) {
   console.log(matchInfo);
-  const div = document.createElement("div");
-  div.classList.add("Game");
+  const li = document.createElement("li");
   const player = matchInfo.info.participants;
 
   player.forEach((element) => {
-    div.innerHTML +=
-      '<img width="20px" src="http://ddragon.leagueoflegends.com/cdn/11.15.1/img/champion/' +
+    li.innerHTML +=
+      '<img class="matchListCampIcon" src="http://ddragon.leagueoflegends.com/cdn/11.15.1/img/champion/' +
       element.championName +
       '.png">' +
       `${element.kills}/${element.deaths}/${element.assists}/` +
       element.summonerName;
   });
 
-  gameList.append(div);
+  matchList.append(li);
 }
 
 // const icon = document.getElementById("icon");

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <title>롤 전적 검색 TLQKF.KR</title>
+    <link rel="shorcut icon" sizes="16x16" href="shortcutIcon.png" />
+    <style>
+      body {
+        margin-top: 150px;
+        background-color: beige;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      body > div {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+      div {
+        padding: 20px;
+      }
+      span {
+        padding: 20px;
+      }
+    </style>
+    <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+  </head>
+  <body>
+    <span id="summonerName">닉네임:</span>
+    <div>
+      <div class="IconBeforeChange">
+        <img src="ProfileIcon.png" id="iconBefore" />
+      </div>
+      <span>-></span>
+      <div class="IconAfterChange">
+        <img src="ProfileIcon.png" id="iconAfter" />
+      </div>
+    </div>
+    <span
+      >아이콘을 오른쪽 아이콘으로 변경한 후 변경할 비밀번호를 입력하시오</span
+    >
+    <form>
+      <label for="password">비밀번호</label>
+      <input required id="password" placeholder="비밀번호" type="password" />
+      <label for="password">비밀번호 확인</label>
+      <input
+        required
+        id="passwordCheck"
+        placeholder="비밀번호 확인"
+        type="password"
+      />
+      <input
+        class="SearchForm__Button"
+        type="IMAGE"
+        src="/img/shortcutIcon.png"
+        name="Submit"
+        value="Submit"
+        align="absmiddle"
+      />
+    </form>
+    <script src="/js/verify.js"></script>
+  </body>
+</html>

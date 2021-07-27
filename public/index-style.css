@@ -1,0 +1,28 @@
+body {
+  margin-top: 150px;
+  background-color: beige;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+h1 {
+  font-size: 80px;
+}
+input {
+  padding: 10px;
+}
+input:nth-child(1) {
+  width: 500px;
+  height: 60px;
+  border-style: none;
+  font-size: x-large;
+}
+.form {
+  margin-top: 50px;
+  background-color: white;
+}
+input:nth-child(2) {
+  width: 60px;
+  height: 60px;
+}

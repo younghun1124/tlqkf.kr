@@ -1,0 +1,77 @@
+html {
+  background-color: whitesmoke;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body {
+  background-color: beige;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vh;
+  height: 100vh;
+}
+.menu {
+  margin-left: 60vh;
+  padding: 20px 0px;
+}
+header {
+  width: 90vh;
+  margin: 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-style: solid;
+  border-color: black;
+}
+form {
+  margin: 30px;
+}
+header > div > img {
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+}
+main {
+  display: flex;
+}
+
+.SideContents {
+  background-color: tomato;
+  width: 18vh;
+  height: 100vh;
+  margin: 10px;
+}
+.TierBox {
+  background-color: violet;
+  width: 16vh;
+  height: 100px;
+  margin: 10px;
+}
+.LatestComments {
+  margin: 10px;
+  background-color: thistle;
+}
+.Comments {
+  margin: 10px 0px;
+  width: 16vh;
+  height: 30px;
+  background-color: yellow;
+}
+.MainContents {
+  background-color: teal;
+  width: 72vh;
+  padding: 10px;
+}
+.GameList {
+  padding: 10px 0px;
+  background-color: aqua;
+  width: 72vh;
+}
+.Game {
+  background-color: cadetblue;
+  height: 200px;
+  margin: 10px;
+}
