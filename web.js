@@ -1,5 +1,8 @@
 const express = require("express");
 const app = express();
+const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
+var cookieParser = require("cookie-parser");
 app.use(express.urlencoded({ extended: true }));
 app.set("views", __dirname + "/views");
 app.use("/js", express.static(__dirname + "/js"));
@@ -8,7 +11,7 @@ app.use("/public", express.static(__dirname + "/public"));
 const { verifyToken } = require("./routes/middleware");
 
 JWT_SECRET = "SASDjha89dy21HJGa1";
-const API_KEY = "RGAPI-ee2c50bb-a3fd-46a5-9358-0edd04cfc530"; //process.env.API_KEY;
+const API_KEY = "RGAPI-29933d3c-1b2f-4e71-a0e1-2cb4e0b50a6d"; //process.env.API_KEY;
 const PORT = 8001; //process.env.PORT;
 
 var RiotRequest = require("riot-lol-api");
@@ -77,15 +80,22 @@ app.post("/auth", (req, res) => {
     "summoner",
     `/lol/summoner/v4/summoners/by-name/${req.body.summonerName}`,
     function (err, summonerData) {
-      makeRandIcon(summonerData, (randIconId) => {
-        db.collection("authKey").insertOne(
+      makeRandIcon(summonerData, function (randIconId) {
+        db.collection("authKey").updateOne(
+          { puuid: summonerData.puuid },
           {
-            summonerName: decodeURI(summonerData.name),
-            key: randIconId,
-            time: getCurrentDate(),
+            $set: {
+              puuid: summonerData.puuid,
+              summonerName: summonerData.name,
+              key: randIconId,
+              time: getCurrentDate(),
+            },
           },
+          { upsert: true },
           (err, result) => {
             if (err) {
+              console.log("auth DB삽입 에러발생");
+              console.log(err);
             } else {
               res.send({ randIconId: randIconId, summonerData: summonerData });
             }
@@ -114,22 +124,51 @@ app.post("/auth/verify", (req, res) => {
           console.log(result);
           console.log(summonerData.profileIconId);
           if (result.key === summonerData.profileIconId) {
-            const token = jwt.sign(
-              {
-                puuid: summonerData.puuid,
-                summonerName: summonerData.summonerName,
-              },
-              JWT_SECRET,
-              {
-                expiresIn: "30h", // 1분
-                issuer: "TLQKF.KR",
-              }
-            );
+            crypto.randomBytes(64, (err, buf) => {
+              crypto.pbkdf2(
+                req.body.pw,
+                buf.toString("base64"),
+                102350,
+                64,
+                "sha512",
+                (err, key) => {
+                  const query = { puuid: summonerData.puuid };
+                  const update = {
+                    $set: {
+                      name: summonerData.name,
+                      puuid: summonerData.puuid,
+                      salt: buf.toString("base64"),
+                      pw: key.toString("base64"),
+                    },
+                  };
+                  const options = { upsert: true };
+                  db.collection("login").updateOne(
+                    query,
+                    update,
+                    options,
+                    function (err, result) {
+                      const token = jwt.sign(
+                        {
+                          puuid: summonerData.puuid,
+                          summonerName: summonerData.summonerName,
+                        },
+                        JWT_SECRET,
+                        {
+                          expiresIn: "6h", // 1분
+                          issuer: "TLQKF.KR",
+                        }
+                      );
 
-            res.cookie("summonerName", token);
-            res.send("ok");
+                      res.cookie("summonerName", token);
+                      res.send("ok");
+                    }
+                  );
+                }
+              );
+            });
           } else {
-            res.send("Icon not correct");
+            res.status(403);
+            res.send("아이콘이 다릅니다.");
           }
         }
       );
