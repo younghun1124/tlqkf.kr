@@ -11,7 +11,7 @@ app.use("/public", express.static(__dirname + "/public"));
 const { verifyToken } = require("./routes/middleware");
 
 JWT_SECRET = "SASDjha89dy21HJGa1";
-const API_KEY = "RGAPI-29933d3c-1b2f-4e71-a0e1-2cb4e0b50a6d"; //process.env.API_KEY;
+const API_KEY = "RGAPI-40ece4c3-c8dc-4435-ab83-90baf090ff9f"; //process.env.API_KEY;
 const PORT = 8001; //process.env.PORT;
 
 var RiotRequest = require("riot-lol-api");
@@ -178,6 +178,9 @@ app.post("/auth/verify", (req, res) => {
 app.get("/riot.txt", (req, res) => {
   res.sendFile(__dirname + "/riot.txt");
 });
+app.get("//riot.txt", (req, res) => {
+  res.sendFile(__dirname + "/riot.txt");
+});
 app.post("/login", (req, res) => {
   riotRequest.request(
     "kr",
@@ -224,6 +227,9 @@ app.post("/login", (req, res) => {
     }
   );
 });
+
+app.post("/");
+
 function getCurrentDate() {
   var date = new Date();
   var year = date.getFullYear();
