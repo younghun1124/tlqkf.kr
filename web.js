@@ -198,7 +198,7 @@ app.post("/login", (req, res) => {
                   const token = jwt.sign(
                     {
                       puuid: result.puuid,
-                      summonerName: result.summonerName,
+                      summonerName: result.name,
                     },
                     JWT_SECRET,
                     {
