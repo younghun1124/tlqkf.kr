@@ -175,8 +175,8 @@ app.post("/auth/verify", (req, res) => {
     }
   );
 });
-app.get("//riot.txt", (req, res) => {
-  res.sendFile(__dirname + "riot.txt");
+app.get("/riot.txt", (req, res) => {
+  res.sendFile(__dirname + "/riot.txt");
 });
 app.post("/login", (req, res) => {
   riotRequest.request(
