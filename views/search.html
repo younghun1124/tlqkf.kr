@@ -31,29 +31,25 @@
       <div class="Profile">
         <h1 id="summonerName"></h1>
       </div>
-      <form>
+      <div>
         <label for="password">로그인</label>
-        <input
-          required
-          id="password"
-          placeholder="password 기능 구현중"
-          type="password"
-        />
+        <input required id="password" placeholder="password" type="password" />
         <input
           type="IMAGE"
           src="/img/shortcutIcon.png"
           name="Submit"
           value="Submit"
           align="absmiddle"
+          onclick="login()"
         />
-      </form>
-      <form>
+      </div>
+      <div>
         <input
           type="button"
           value="비밀번호 재설정"
           onclick="location.href = `/auth/${pathName[2]}`"
         />
-      </form>
+      </div>
     </header>
     <main>
       <div class="SideContents">
@@ -71,5 +67,6 @@
     </main>
     <script src="/js/summoner.js"></script>
     <script src="/js/search.js"></script>
+    <script src="/js/login.js"></script>
   </body>
 </html>

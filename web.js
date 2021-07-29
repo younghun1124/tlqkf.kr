@@ -154,7 +154,7 @@ app.post("/auth/verify", (req, res) => {
                         },
                         JWT_SECRET,
                         {
-                          expiresIn: "6h", // 1분
+                          expiresIn: "6h",
                           issuer: "TLQKF.KR",
                         }
                       );
@@ -176,6 +176,52 @@ app.post("/auth/verify", (req, res) => {
   );
 });
 
+app.post("/login", (req, res) => {
+  riotRequest.request(
+    "kr",
+    "summoner",
+    `/lol/summoner/v4/summoners/by-name/${req.body.summonerName}`,
+    function (err, summonerData) {
+      db.collection("login").findOne(
+        { puuid: summonerData.puuid },
+        (err, result) => {
+          if (result) {
+            crypto.pbkdf2(
+              req.body.pw,
+              result.salt.toString("base64"),
+              102350,
+              64,
+              "sha512",
+              (err, key) => {
+                console.log(key);
+                if (key.toString("base64") === result.pw) {
+                  const token = jwt.sign(
+                    {
+                      puuid: result.puuid,
+                      summonerName: result.summonerName,
+                    },
+                    JWT_SECRET,
+                    {
+                      expiresIn: "6h",
+                      issuer: "TLQKF.KR",
+                    }
+                  );
+
+                  res.cookie("summonerName", token);
+                  res.send("ok");
+                } else {
+                  res.send("비밀번호 다름");
+                }
+              }
+            );
+          } else {
+            res.send("비밀번호 생성 안함");
+          }
+        }
+      );
+    }
+  );
+});
 function getCurrentDate() {
   var date = new Date();
   var year = date.getFullYear();
