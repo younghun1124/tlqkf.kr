@@ -11,7 +11,7 @@ app.use("/public", express.static(__dirname + "/public"));
 const { verifyToken } = require("./routes/middleware");
 
 JWT_SECRET = "SASDjha89dy21HJGa1";
-const API_KEY = "RGAPI-40ece4c3-c8dc-4435-ab83-90baf090ff9f"; //process.env.API_KEY;
+const API_KEY = "RGAPI-9acaba79-d6b9-4884-96a4-3526e7ca70b6"; //process.env.API_KEY;
 const PORT = 8001; //process.env.PORT;
 
 var RiotRequest = require("riot-lol-api");
@@ -88,7 +88,7 @@ app.post("/auth", (req, res) => {
               puuid: summonerData.puuid,
               summonerName: summonerData.name,
               key: randIconId,
-              time: getCurrentDate(),
+              time: new Date(),
             },
           },
           { upsert: true },
@@ -121,62 +121,65 @@ app.post("/auth/verify", (req, res) => {
       db.collection("authKey").findOne(
         { summonerName: summonerData.name },
         function (err, result) {
-          console.log(result);
-          console.log(summonerData.profileIconId);
-          if (result.key === summonerData.profileIconId) {
-            crypto.randomBytes(64, (err, buf) => {
-              crypto.pbkdf2(
-                req.body.pw,
-                buf.toString("base64"),
-                102350,
-                64,
-                "sha512",
-                (err, key) => {
-                  const query = { puuid: summonerData.puuid };
-                  const update = {
-                    $set: {
-                      name: summonerData.name,
-                      puuid: summonerData.puuid,
-                      salt: buf.toString("base64"),
-                      pw: key.toString("base64"),
-                    },
-                  };
-                  const options = { upsert: true };
-                  db.collection("login").updateOne(
-                    query,
-                    update,
-                    options,
-                    function (err, result) {
-                      const token = jwt.sign(
-                        {
-                          puuid: summonerData.puuid,
-                          summonerName: summonerData.summonerName,
-                        },
-                        JWT_SECRET,
-                        {
-                          expiresIn: "6h",
-                          issuer: "TLQKF.KR",
-                        }
-                      );
+          let dbDate = new Date(result.time).getTime();
+          const VERIFY_TIME_KEY = 1;
+          const verifyTime = VERIFY_TIME_KEY * 60 * 1000;
+          if (getUTCtime() - dbDate < verifyTime) {
+            if (result.key === summonerData.profileIconId) {
+              crypto.randomBytes(64, (err, buf) => {
+                crypto.pbkdf2(
+                  req.body.pw,
+                  buf.toString("base64"),
+                  102350,
+                  64,
+                  "sha512",
+                  (err, key) => {
+                    const query = { puuid: summonerData.puuid };
+                    const update = {
+                      $set: {
+                        name: summonerData.name,
+                        puuid: summonerData.puuid,
+                        salt: buf.toString("base64"),
+                        pw: key.toString("base64"),
+                      },
+                    };
+                    const options = { upsert: true };
+                    db.collection("login").updateOne(
+                      query,
+                      update,
+                      options,
+                      function (err, result) {
+                        const token = jwt.sign(
+                          {
+                            puuid: summonerData.puuid,
+                            summonerName: summonerData.summonerName,
+                          },
+                          JWT_SECRET,
+                          {
+                            expiresIn: "6h",
+                            issuer: "TLQKF.KR",
+                          }
+                        );
 
-                      res.cookie("summonerName", token);
-                      res.send("ok");
-                    }
-                  );
-                }
-              );
-            });
+                        res.cookie("summonerName", token);
+                        res.send("ok");
+                      }
+                    );
+                  }
+                );
+              });
+            } else {
+              res.status(403);
+              res.send("아이콘이 다릅니다.");
+            }
           } else {
-            res.status(403);
-            res.send("아이콘이 다릅니다.");
+            res.status(408);
+            res.send("요청이 만료되었습니다.");
           }
         }
       );
     }
   );
-});
-app.get("/riot.txt", (req, res) => {
-  res.sendFile(__dirname + "/riot.txt");
 });
 app.get("//riot.txt", (req, res) => {
   res.sendFile(__dirname + "/riot.txt");
@@ -228,20 +231,9 @@ app.post("/login", (req, res) => {
   );
 });
 
-app.post("/");
-
-function getCurrentDate() {
-  var date = new Date();
-  var year = date.getFullYear();
-  var month = date.getMonth();
-  var today = date.getDate();
-  var hours = date.getHours();
-  var minutes = date.getMinutes();
-  var seconds = date.getSeconds();
-  var milliseconds = date.getMilliseconds();
-  return new Date(
-    Date.UTC(year, month, today, hours, minutes, seconds, milliseconds)
-  );
+function getUTCtime() {
+  const currTime = new Date();
+  return currTime.getTime();
 }
 
 function makeRandIcon(summonerData, callback) {
