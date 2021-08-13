@@ -1,7 +1,6 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
-const JWT_SECRET = "a2HEX12JKWDQ12dJKas";
 const { verifyToken } = require("./middlewares");
+const jwt = require("./jwt");
 
 const router = express.Router();
 

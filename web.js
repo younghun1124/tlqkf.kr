@@ -8,14 +8,17 @@ app.set("views", __dirname + "/views");
 app.use("/js", express.static(__dirname + "/js"));
 app.use("/img", express.static(__dirname + "/img"));
 app.use("/public", express.static(__dirname + "/public"));
+
 const { verifyToken } = require("./routes/middleware");
 
 JWT_SECRET = "SASDjha89dy21HJGa1";
-const API_KEY = "RGAPI-9acaba79-d6b9-4884-96a4-3526e7ca70b6"; //process.env.API_KEY;
+const API_KEY = "RGAPI-d3b4a1b1-d67e-4898-8b15-2ae32b414d81"; //process.env.API_KEY;
 const PORT = 8001; //process.env.PORT;
 
 var RiotRequest = require("riot-lol-api");
 var riotRequest = new RiotRequest(API_KEY);
+app.use("/auth", require("./routes/auth.js")(riotRequest));
+app.use("/review", require("./routes/review.js"));
 
 const MongoClient = require("mongodb").MongoClient;
 
@@ -64,185 +67,27 @@ app.get("/matchId", (req, res) => {
   );
 });
 
+app.get("/rankInfo", (req, res) => {
+  riotRequest.request(
+    "kr",
+    "match",
+    `/lol/league/v4/entries/by-summoner/${req.query.id}`,
+    function (err, rankInfo) {
+      res.send(rankInfo);
+    }
+  );
+});
+
 app.get("/matchInfo", (req, res) => {
   riotRequest.request(
     "asia",
-    "match",
+    "league",
     `/lol/match/v5/matches/${req.query.matchId}`,
     function (err, matchInfo) {
       res.send(matchInfo);
     }
   );
 });
-app.post("/auth", (req, res) => {
-  riotRequest.request(
-    "kr",
-    "summoner",
-    `/lol/summoner/v4/summoners/by-name/${req.body.summonerName}`,
-    function (err, summonerData) {
-      makeRandIcon(summonerData, function (randIconId) {
-        db.collection("authKey").updateOne(
-          { puuid: summonerData.puuid },
-          {
-            $set: {
-              puuid: summonerData.puuid,
-              summonerName: summonerData.name,
-              key: randIconId,
-              time: new Date(),
-            },
-          },
-          { upsert: true },
-          (err, result) => {
-            if (err) {
-              console.log("auth DB삽입 에러발생");
-              console.log(err);
-            } else {
-              res.send({ randIconId: randIconId, summonerData: summonerData });
-            }
-          }
-        );
-      });
-    }
-  );
-});
-
-app.get("/auth/:authName", (req, res) => {
-  res.sendFile(__dirname + "/views/auth.html");
-});
-
-app.post("/auth/verify", (req, res) => {
-  console.log(req.body.summonerName);
-  riotRequest.request(
-    "kr",
-    "summoner",
-    `/lol/summoner/v4/summoners/by-name/${req.body.summonerName}`,
-    function (err, summonerData) {
-      console.log(summonerData.name);
-      db.collection("authKey").findOne(
-        { summonerName: summonerData.name },
-        function (err, result) {
-          let dbDate = new Date(result.time).getTime();
-          const VERIFY_TIME_KEY = 1;
-          const verifyTime = VERIFY_TIME_KEY * 60 * 1000;
-          if (getUTCtime() - dbDate < verifyTime) {
-            if (result.key === summonerData.profileIconId) {
-              crypto.randomBytes(64, (err, buf) => {
-                crypto.pbkdf2(
-                  req.body.pw,
-                  buf.toString("base64"),
-                  102350,
-                  64,
-                  "sha512",
-                  (err, key) => {
-                    const query = { puuid: summonerData.puuid };
-                    const update = {
-                      $set: {
-                        name: summonerData.name,
-                        puuid: summonerData.puuid,
-                        salt: buf.toString("base64"),
-                        pw: key.toString("base64"),
-                      },
-                    };
-                    const options = { upsert: true };
-                    db.collection("login").updateOne(
-                      query,
-                      update,
-                      options,
-                      function (err, result) {
-                        const token = jwt.sign(
-                          {
-                            puuid: summonerData.puuid,
-                            summonerName: summonerData.summonerName,
-                          },
-                          JWT_SECRET,
-                          {
-                            expiresIn: "6h",
-                            issuer: "TLQKF.KR",
-                          }
-                        );
-
-                        res.cookie("summonerName", token);
-                        res.send("ok");
-                      }
-                    );
-                  }
-                );
-              });
-            } else {
-              res.status(403);
-              res.send("아이콘이 다릅니다.");
-            }
-          } else {
-            res.status(408);
-            res.send("요청이 만료되었습니다.");
-          }
-        }
-      );
-    }
-  );
-});
 app.get("//riot.txt", (req, res) => {
   res.sendFile(__dirname + "/riot.txt");
 });
-app.post("/login", (req, res) => {
-  riotRequest.request(
-    "kr",
-    "summoner",
-    `/lol/summoner/v4/summoners/by-name/${req.body.summonerName}`,
-    function (err, summonerData) {
-      db.collection("login").findOne(
-        { puuid: summonerData.puuid },
-        (err, result) => {
-          if (result) {
-            crypto.pbkdf2(
-              req.body.pw,
-              result.salt.toString("base64"),
-              102350,
-              64,
-              "sha512",
-              (err, key) => {
-                console.log(key);
-                if (key.toString("base64") === result.pw) {
-                  const token = jwt.sign(
-                    {
-                      puuid: result.puuid,
-                      summonerName: result.name,
-                    },
-                    JWT_SECRET,
-                    {
-                      expiresIn: "6h",
-                      issuer: "TLQKF.KR",
-                    }
-                  );
-
-                  res.cookie("summonerName", token);
-                  res.send("ok");
-                } else {
-                  res.send("비밀번호 다름");
-                }
-              }
-            );
-          } else {
-            res.send("비밀번호 생성 안함");
-          }
-        }
-      );
-    }
-  );
-});
-
-function getUTCtime() {
-  const currTime = new Date();
-  return currTime.getTime();
-}
-
-function makeRandIcon(summonerData, callback) {
-  randIconId = Math.floor(Math.random() * 29);
-  console.log(randIconId);
-  console.log(summonerData.profileIconId);
-  if (randIconId === summonerData.profileIconId) {
-    makeRandIcon(summonerData);
-  } else {
-    callback(randIconId);
-  }
-}

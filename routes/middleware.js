@@ -4,7 +4,7 @@ exports.verifyToken = (req, res, next) => {
   // 인증 완료
   try {
     // 요청 헤더에 저장된 토큰(req.headers.authorization)과 비밀키를 사용하여 토큰 반환
-    req.decoded = jwt.verify(req.headers.authorization, JWT_SECRET);
+    req.decoded = jwt.verify(req.headers.authorization, "SASDjha89dy21HJGa1");
     return next();
   } catch (error) {
     // 인증 실패

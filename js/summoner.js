@@ -62,6 +62,26 @@ function getMatchId(puuid) {
     });
 }
 
+// function getRankInfo(id) {
+//   $.ajax({
+//     type: "GET",
+//     url: `/matchId`,
+//     data: { id: id },
+//   })
+//     .done(function (data, status, xhr) {
+//       useRankInfo(data);
+//       console.log("요청 성공시 호출");
+//     })
+//     .fail(function () {
+//       console.log("요청 실패시 호출");
+//     })
+//     .always(function () {
+//       console.log("성공 실패 상관없이 호출");
+//     });
+// }
+
+function useRankInfo(data) {}
+
 function getMatchInfo(matchId) {
   $.ajax({
     type: "GET",

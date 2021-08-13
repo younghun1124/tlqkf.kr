@@ -2,7 +2,7 @@ const pw = document.querySelector("#password");
 function login() {
   $.ajax({
     type: "POST",
-    url: `/login`,
+    url: `/auth/login`,
     withCredentials: true,
     data: { summonerName: pathName[2], pw: pw.value },
   })

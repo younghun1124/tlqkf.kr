@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="kr">
+  <head>
+    <title>롤 전적 검색 TLQKF.KR</title>
+    <link href="/public/search-style.css" rel="stylesheet" />
+    <link rel="shorcut icon" sizes="16x16" href="/img/shortcutIcon.png" />
+    <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+  </head>
+  <body>
+    <div class="menu">
+      <input
+        id="searchName"
+        onkeyup="enterkey();"
+        required
+        placeholder="소환사명"
+        type="text"
+      />
+      <input
+        type="IMAGE"
+        src="/img/shortcutIcon.png"
+        name="Submit"
+        value="Submit"
+        align="absmiddle"
+        onclick="search();"
+      />
+    </div>
+    <header>
+      <div class="ProfileIcon">
+        <img src="/img/icon_29.png" id="profileIcon" />
+      </div>
+      <div class="Profile">
+        <h1 id="summonerName"></h1>
+      </div>
+      <div>
+        <label for="password">로그인</label>
+        <input required id="password" placeholder="password" type="password" />
+        <input
+          type="IMAGE"
+          src="/img/shortcutIcon.png"
+          name="Submit"
+          value="Submit"
+          align="absmiddle"
+          onclick="login()"
+        />
+      </div>
+      <div>
+        <input
+          type="button"
+          value="비밀번호 재설정"
+          onclick="location.href = `/auth/${pathName[2]}`"
+        />
+      </div>
+    </header>
+    <main>
+      <div class="SideContents">
+        <div class="TierBox">소환사정보</div>
+        <div class="LatestComments">
+          <span>최근코멘트</span>
+          <div class="Comments">코멘트</div>
+          <div class="Comments">코멘트</div>
+        </div>
+      </div>
+      <div class="MainContents">
+        <div class="GameList"></div>
+        <button onclick="getMatchId(summonerInfo.puuid)">매치 더보기</button>
+      </div>
+    </main>
+    <script src="/js/summoner.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/login.js"></script>
+  </body>
+</html>
