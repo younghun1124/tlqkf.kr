@@ -1,77 +1,128 @@
-html {
+.header {
   background-color: whitesmoke;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-body {
-  background-color: beige;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100vh;
-  height: 100vh;
-}
-.menu {
-  margin-left: 60vh;
-  padding: 20px 0px;
-}
-header {
-  width: 90vh;
-  margin: 50px;
+  width: 900px;
+  margin: 100px;
+  margin-top: 200px;
   display: flex;
   flex-direction: row;
   align-items: center;
   border-style: solid;
   border-color: black;
 }
-form {
-  margin: 30px;
-}
-header > div > img {
-  width: 100px;
-  height: 100px;
+.header__profile-icon {
+  width: 120px;
+  height: 120px;
   margin: 10px;
+}
+.header__profile-div {
+  display: flex;
+  flex-direction: column;
+}
+.header__profile-div__name {
+  font-size: xx-large;
+  font-weight: bold;
+}
+.header__profile-div__ranking {
+  font-size: 12px;
+  padding-bottom: 10px;
+}
+.header__profile-div__renewal-button {
+  width: 120px;
+  height: 40px;
+  background-color: #cfad65;
+  color: white;
+  margin-bottom: 15px;
+}
+.header__login-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: white;
+  height: 35px;
+  margin-left: 50px;
+  margin-top: 54px;
+}
+.header__login-div__password:focus {
+  outline: none;
+}
+.header__login-div__password {
+  padding: 3px;
+  width: 250px;
+  height: 25px;
+  border-style: none;
+}
+.header__login-div__button {
+  color: white;
+  background-color: #cfad65;
+  border-radius: 8px;
+  border-style: none;
+  margin: 8px;
+  height: 70%;
+}
+.header__reset-password {
+  height: 40px;
+  width: 150px;
+  background-color: #cfad65;
+  color: white;
+  margin-left: 30px;
+  margin-top: 54px;
+}
+.adsdiv {
+  margin-bottom: 60px;
+}
+.ads {
+  width: 750px;
+  height: 135px;
 }
 main {
+  background-color: whitesmoke;
   display: flex;
+  width: 100%;
+  justify-content: center;
 }
 
-.SideContents {
-  background-color: tomato;
-  width: 18vh;
-  height: 100vh;
-  margin: 10px;
+.main__side-contents {
+  width: 300px;
+  margin: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.TierBox {
+.main__side-contents__tier-box {
   background-color: violet;
-  width: 16vh;
-  height: 100px;
+  width: 100%;
+  height: 300px;
   margin: 10px;
 }
-.LatestComments {
+.main__sode-contents__latest-comments {
+  width: 100%;
   margin: 10px;
-  background-color: thistle;
+  background-color: lavender;
+  border: black;
+  border-width: 0.3px;
+  border-style: solid;
 }
-.Comments {
+.main__sode-contents__latest-comments__span-div {
+  border: black;
+  border-width: 0.3px;
+  border-style: solid;
+}
+.main__sode-contents__latest-comments__span-div__span {
+  font-size: 15px;
+  font-weight: bold;
+}
+.main__sode-contents__latest-comments__comments {
   margin: 10px 0px;
-  width: 16vh;
-  height: 30px;
-  background-color: yellow;
+  width: 100%;
+  background-color: whitesmoke;
 }
-.MainContents {
-  background-color: teal;
-  width: 72vh;
-  padding: 10px;
+
+.main__game-list {
+  width: 40%;
 }
-.GameList {
-  padding: 10px 0px;
-  background-color: aqua;
-  width: 72vh;
-}
-.Game {
+.main__main-contents__game-list__game {
   background-color: cadetblue;
-  height: 200px;
+  width: 90%;
+  height: 150px;
   margin: 10px;
 }

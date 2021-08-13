@@ -1,28 +1,55 @@
-body {
-  margin-top: 150px;
-  background-color: beige;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+@font-face {
+  src: url("/font/NotoSansKR-Regular.otf");
+  font-family: "tlqkffont";
 }
-h1 {
+.main-logo-div {
+  margin-top: 200px;
+  text-align: center;
+}
+.main-logo-div__h1 {
+  font-family: "tlqkffont";
   font-size: 80px;
+  color: #cfad65;
 }
-input {
+.search-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: white;
+  margin-top: 50px;
+  width: 800px;
+  border-radius: 15px;
+}
+.search-div__input:focus {
+  border-radius: 15px;
+  outline: none;
+}
+
+.search-div__input {
+  border-radius: 30px;
   padding: 10px;
-}
-input:nth-child(1) {
-  width: 500px;
+  width: 90%;
   height: 60px;
   border-style: none;
   font-size: x-large;
 }
-.form {
-  margin-top: 50px;
-  background-color: white;
+.search-div__button {
+  color: white;
+  background-color: #cfad65;
+  border-radius: 20px;
+  border-style: none;
+  margin-right: 24px;
 }
-input:nth-child(2) {
-  width: 60px;
-  height: 60px;
+.under-text-div {
+  display: flex;
+  flex-direction: row;
+}
+.under-text-div__text {
+  font-family: "tlqkffont";
+  font-size: 20px;
+  margin-left: 4px;
+  color: white;
+}
+.under-text-div__text::first-letter {
+  color: #cfad65;
 }

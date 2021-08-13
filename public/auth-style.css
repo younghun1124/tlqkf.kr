@@ -1,0 +1,42 @@
+main {
+  margin-top: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.main__summoner-name {
+  margin-bottom: 50px;
+  color: #cfad65;
+}
+.main__icon-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 50px;
+}
+.main__icon-div__arrow {
+  color: #cfad65;
+  font-size: xx-large;
+  margin: 30px;
+}
+.main__span {
+  color: #cfad65;
+  margin-bottom: 50px;
+}
+.main__password-div__password {
+  padding: 3px;
+  width: 250px;
+  height: 25px;
+  border-style: none;
+}
+.main__password-div__password:focus {
+  outline: none;
+}
+.main__password-div__button {
+  height: 30px;
+}
+.profile-icon {
+  width: 150px;
+  height: 150px;
+}

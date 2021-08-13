@@ -2,20 +2,48 @@
 <html lang="kr">
   <head>
     <title>롤 전적 검색 TLQKF.KR</title>
-    <link rel="shorcut icon" sizes="16x16" href="shortcutIcon.png" />
+    <link href="/public/main-css.css" rel="stylesheet" />
+    <link rel="shorcut icon" sizes="16x16" href="/img/icon.png" />
     <style>
-      body {
-        margin-top: 150px;
-        background-color: beige;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+      main {
+        margin-top: 300px;
+      }
+      h4 {
+        color: #cfad65;
       }
     </style>
   </head>
   <body>
-    <h4>비밀번호 재설정 완료</h4>
-    <h4>이제 소환사 아이콘을 재설정해도 됩니다.</h4>
+    <header class="menu-bar">
+      <a class="menu-bar__home-button" href="http://tlqkf.kr/">
+        <img src="/img/icon.png" height="100%" />
+      </a>
+      <a class="menu-bar__multi-search-button" href=""><span>멀티서치</span></a>
+      <div class="menu-bar__search-div">
+        <input
+          class="menu-bar__search-div__input"
+          onkeyup="enterkey();"
+          required
+          placeholder="소환사명"
+          type="text"
+        />
+        <input
+          class="menu-bar__search-div__button"
+          type="IMAGE"
+          src="/img/search-icon.png"
+          name="Submit"
+          value="Submit"
+          align="absmiddle"
+          onclick="search()"
+        />
+      </div>
+    </header>
+    <main>
+      <h4>비밀번호 재설정 완료</h4>
+      <h4>이제 소환사 아이콘을 재설정해도 됩니다.</h4>
+    </main>
+    <footer>
+      <p>푸터~~~~~~</p>
+    </footer>
   </body>
 </html>

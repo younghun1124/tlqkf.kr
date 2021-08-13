@@ -1,32 +1,58 @@
 <!DOCTYPE html>
 <html lang="kr">
   <head>
-    <title>롤 전적 검색 TLQKF.KR</title>
+    <title>롤 전적 검색 TLQKF.kr</title>
+    <link href="/public/main-css.css" rel="stylesheet" />
     <link href="/public/index-style.css" rel="stylesheet" />
-    <link rel="shorcut icon" sizes="16x16" href="/img/shortcutIcon.png" />
+    <link rel="shorcut icon" sizes="16x16" href="/img/icon.png" />
   </head>
   <body>
-    <h1>Tlqkf.KR</h1>
-    <div class="form">
+    <header class="menu-bar">
+      <a class="menu-bar__home-button" href="http://tlqkf.kr/">
+        <img src="/img/icon.png" height="100%" />
+      </a>
+      <a class="menu-bar__multi-search-button" href=""><span>멀티서치</span></a>
+    </header>
+    <div class="main-logo-div"><h1 class="main-logo-div__h1">TLQKF.kr</h1></div>
+    <div class="search-div">
       <input
-        class="SearchForm__InputName"
+        class="search-div__input"
         required
-        placeholder="소환사명"
-        id="searchName"
+        placeholder="마스터이 (0/8/0) : 님 @ㅐ미 없어요?"
         type="text"
         onkeyup="enterkey();"
       />
       <input
-        class="SearchForm__Button"
+        class="search-div__button"
         type="IMAGE"
-        src="/img/shortcutIcon.png"
+        src="/img/search-icon.png"
         name="Submit"
         value="Submit"
         align="absmiddle"
         onclick="search()"
       />
     </div>
-    <h4>Troll needs to be lambasted quick to keep our fucking league clean</h4>
+    <div class="under-text-div">
+      <h3 class="under-text-div__text">Troll,</h3>
+      <h3 class="under-text-div__text">Loser,</h3>
+      <h3 class="under-text-div__text">Quitter,</h3>
+      <h3 class="under-text-div__text">Keyboard-warrior,</h3>
+      <h3 class="under-text-div__text">Fuck you.</h3>
+    </div>
+    <div class="video-div">
+      <iframe
+        width="640"
+        height="360"
+        src="https://www.youtube.com/embed/CNvN9wPx2Ag"
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+    </div>
+    <footer>
+      <p>푸터~~~~~~</p>
+    </footer>
     <script src="/js/search.js"></script>
   </body>
 </html>
