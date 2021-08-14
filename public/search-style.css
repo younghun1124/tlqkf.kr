@@ -119,6 +119,9 @@ main {
 
 .main__game-list {
   width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .main__main-contents__game-list__game {
   background-color: cadetblue;
