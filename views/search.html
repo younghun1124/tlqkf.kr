@@ -15,6 +15,7 @@
       <a class="menu-bar__multi-search-button" href=""><span>멀티서치</span></a>
       <div class="menu-bar__search-div">
         <input
+          id="searchInput"
           class="menu-bar__search-div__input"
           onkeyup="enterkey();"
           required
@@ -51,7 +52,7 @@
         <input
           class="header__login-div__button"
           type="IMAGE"
-          src="search-icon.png"
+          src="/img/search-icon.png"
           name="Submit"
           value="Submit"
           align="absmiddle"
@@ -130,6 +131,7 @@
           </div>
         </div>
       </div>
+
       <div class="main__game-list">
         <button onclick="getMatchId(summonerInfo.puuid)">매치 더보기</button>
       </div>

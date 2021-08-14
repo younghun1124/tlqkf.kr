@@ -12,7 +12,7 @@ app.use("/public", express.static(__dirname + "/public"));
 const { verifyToken } = require("./routes/middleware");
 
 JWT_SECRET = "SASDjha89dy21HJGa1";
-const API_KEY = "RGAPI-d3b4a1b1-d67e-4898-8b15-2ae32b414d81"; //process.env.API_KEY;
+const API_KEY = "RGAPI-30ae563b-2354-455d-b38c-be0c5ad93ad4"; //process.env.API_KEY;
 const PORT = 8001; //process.env.PORT;
 
 var RiotRequest = require("riot-lol-api");

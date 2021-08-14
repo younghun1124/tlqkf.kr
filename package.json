@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "cookie-parser": "^1.4.5",
     "crypto-js": "^4.1.1",
@@ -15,9 +14,6 @@
     "method-override": "^3.0.0",
     "mongodb": "^3.6.4",
     "mongoose": "^5.11.15",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
     "riot-lol-api": "^4.3.3",
     "web-vitals": "^1.1.2"
   },

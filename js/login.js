@@ -1,4 +1,4 @@
-const pw = document.querySelector("#password");
+const pw = document.querySelector(".header__login-div__password");
 function login() {
   $.ajax({
     type: "POST",

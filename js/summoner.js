@@ -1,8 +1,8 @@
 var pathName = window.location.pathname.split("/");
 let summonerInfo;
-const summonerName = document.getElementById("summonerName");
-const icon = document.getElementById("profileIcon");
-const gameList = document.querySelector(".GameList");
+const summonerName = document.querySelector(".header__profile-div__name");
+const icon = document.querySelector(".header__profile-icon");
+const gameList = document.querySelector(".main__game-list");
 
 let startNum = 0;
 const countNum = 3;
@@ -28,7 +28,7 @@ function getSummonerData() {
       }
       summonerInfo = summonerData;
 
-      icon.src = `http://ddragon.leagueoflegends.com/cdn/11.15.1/img/profileicon/${summonerData.profileIconId}.png`;
+      icon.src = `http://ddragon.leagueoflegends.com/cdn/11.16.1/img/profileicon/${summonerData.profileIconId}.png`;
       summonerName.innerText = summonerData.name;
       getMatchId(summonerData.puuid);
       console.log("요청 성공시 호출");
@@ -107,7 +107,7 @@ function useMatchInfo(matchInfo) {
 
   player.forEach((element) => {
     div.innerHTML +=
-      '<img width="20px" src="http://ddragon.leagueoflegends.com/cdn/11.15.1/img/champion/' +
+      '<img width="20px" src="http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/' +
       element.championName +
       '.png">' +
       `${element.kills}/${element.deaths}/${element.assists}/` +

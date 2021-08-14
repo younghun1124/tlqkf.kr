@@ -1,7 +1,7 @@
 var pathName = window.location.pathname.split("/");
-const iconBefore = document.querySelector("#iconBefore");
-const iconAfter = document.querySelector("#iconAfter");
-const summonerName = document.querySelector("#summonerName");
+const iconBefore = document.querySelector(".main__icon-div__before-div__img");
+const iconAfter = document.querySelector(".main__icon-div__after-div__img");
+const summonerName = document.querySelector(".main__summoner-name");
 
 auth();
 function auth() {
@@ -23,7 +23,7 @@ function auth() {
       console.log("성공 실패 상관없이 호출");
     });
 }
-const pw = document.querySelector("#password");
+const pw = document.querySelector(".main__password-div__password");
 const pwCheck = document.querySelector("#passwordCheck");
 
 function verify() {
@@ -53,7 +53,9 @@ function verify() {
 let pwOkay = false;
 function checkPassword() {
   let reg_pw = /(?=.*[a-zA-ZS])(?=.*?[#?!@$%^&*-]).{8,16}/;
-  const password = document.querySelector("#password").value;
+  const password = document.querySelector(
+    ".main__password-div__password"
+  ).value;
   const passwordCheck = document.querySelector("#passwordCheck").value;
   let hint = document.querySelector("#passwordHint");
   if (!reg_pw.test(password) || password.length > 16) {
